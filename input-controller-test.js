@@ -72,19 +72,19 @@ bindActivityBtn.addEventListener('click', () => {
             enabled: true
         },
         left: {
-            keys: ['ArrowLeft'],
+            keys: ['ArrowLeft', 'a'],
             enabled: true
         },
         right: {
-            keys: ['ArrowRight'],
+            keys: ['ArrowRight', 'd'],
             enabled: true
         },
         up: {
-            keys: ['ArrowUp'],
+            keys: ['ArrowUp', "w"],
             enabled: true
         },
         down: {
-            keys: ['ArrowDown'],
+            keys: ['ArrowDown', 's'],
             enabled: true
         }
     });

@@ -106,38 +106,67 @@ class InputController {
         }
     }
 
-    handleKeyDown(e) {
-        if (this.enabled && this.focused) {
-            const {key, keyCode} = e;
-            for (const actionName in this.actions) {
-                if (this.actions.hasOwnProperty(actionName)) {
-                    const {keys, enabled} = this.actions[actionName];
-                    if (enabled && keys.includes(key)) {
-                        if (!this.actions[actionName].active) {
-                            this.actions[actionName].active = true;
-                            this.target.dispatchEvent(new CustomEvent(this.ACTION_ACTIVATED, { detail: actionName }));
-                        }
-                        e.preventDefault();
-                        return;
-                    }
-                }
-            }
-        }
+    // handleKeyDown(e) {
+    //     if (this.enabled && this.focused) {
+    //         const {key, keyCode} = e;
+    //         for (const actionName in this.actions) {
+    //             if (this.actions.hasOwnProperty(actionName)) {
+    //                 const {keys, enabled} = this.actions[actionName];
+    //                 if (enabled && keys.includes(key)) {
+    //                     if (!this.actions[actionName].active) {
+    //                         this.actions[actionName].active = true;
+    //                         this.target.dispatchEvent(new CustomEvent(this.ACTION_ACTIVATED, { detail: actionName }));
+    //                     }
+    //                     e.preventDefault();
+    //                     return;
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+    handleKeyDown(e){
+        this.handleEvent(e, true)
     }
 
-    handleKeyUp(e) {
-        if (this.enabled && this.focused) {
-            const {key, keyCode} = e;
-            for (const actionName in this.actions) {
-                if (this.actions.hasOwnProperty(actionName)) {
-                    const {keys, enabled} = this.actions[actionName];
-                    if (enabled && keys.includes(key)) {
-                        if (this.actions[actionName].active) {
-                            this.actions[actionName].active = false;
-                            this.target.dispatchEvent(new CustomEvent(this.ACTION_DEACTIVATED, { detail: actionName }));
+    handleKeyUp(e){
+        this.handleEvent(e, false)
+    }
+
+
+    // handleKeyUp(e) {
+    //     if (this.enabled && this.focused) {
+    //         const {key, keyCode} = e;
+    //         for (const actionName in this.actions) {
+    //             if (this.actions.hasOwnProperty(actionName)) {
+    //                 const {keys, enabled} = this.actions[actionName];
+    //                 if (enabled && keys.includes(key)) {
+    //                     if (this.actions[actionName].active) {
+    //                         this.actions[actionName].active = false;
+    //                         this.target.dispatchEvent(new CustomEvent(this.ACTION_DEACTIVATED, { detail: actionName }));
+    //                     }
+    //                     e.preventDefault();
+    //                     return;
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+
+    handleEvent(e, isKeyDown){
+        if(this.enabled && this.focused){
+            const {key, keyCode} = e
+            for(const actionName in this.actions){
+                if(this.actions.hasOwnProperty(actionName)){
+                    const {keys, enabled} = this.actions[actionName]
+                    if(enabled && keys.includes(key)){
+                        const isACtive = this.actions[actionName].action
+                        if(isACtive !== isKeyDown){
+                            this.actions[actionName].active = isKeyDown
+                            const eventName = isKeyDown ? this.ACTION_ACTIVATED : this.ACTION_DEACTIVATED
+                            this.target.dispatchEvent(new CustomEvent(eventName, {detail: actionName}))
                         }
-                        e.preventDefault();
-                        return;
+                        e.preventDefault()
+                        return
                     }
                 }
             }
